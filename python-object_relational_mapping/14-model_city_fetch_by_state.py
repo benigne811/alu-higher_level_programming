@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 Module to get all states
@@ -28,4 +27,3 @@ if __name__ == "__main__":
         print("{}: ({}) {}".format(state.name, city.id, city.name))
 
     session.close()
-

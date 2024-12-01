@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 Select all records from states table
@@ -29,4 +28,3 @@ if __name__ == "__main__":
         print(states[i][1], end=", " if i + 1 < len(states) else "")
     print("")
     connection.close()
-

@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 A script to interact with a MySQL database and retrieve records.

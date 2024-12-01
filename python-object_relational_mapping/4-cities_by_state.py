@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 Select all records from states table
@@ -28,4 +27,3 @@ if __name__ == "__main__":
         print(state)
 
     connection.close()
-
