@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 This script makes a request and displays a
@@ -15,4 +14,3 @@ if __name__ == '__main__':
     print("Body response:")
     print("\t- type: {}".format(type(res.text)))
     print("\t- content: {}".format(res.text))
-
