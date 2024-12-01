@@ -1,24 +1,28 @@
 
 #!/usr/bin/python3
-""" prints the first State object from the
-database hbtn_0e_6_usa"""
-import sys
+"""
+Module to get all states
+"""
+from sys import argv
+
+from model_state import State, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from model_state import Base, State
 
 if __name__ == "__main__":
-    engine = create_engine("mysql+mysqldb://{}:{}@localhost/{}"
-                           .format(sys.argv[1], sys.argv[2], sys.argv[3]),
-                           pool_pre_ping=True)
+    username, password, database = argv[1:4]
+    # default host is 'localhost' and default port is '3306'
+    engine = create_engine(
+        'mysql+mysqldb://{}:{}@localhost/{}'
+        .format(username, password, database),
+        pool_pre_ping=True
+    )
+    session = Session(engine)
     Base.metadata.create_all(engine)
 
-    session = Session(engine)
-
-    record = session.query(State).first()
-
-    if record:
-        print("{}: {}".format(record.__dict__['id'], record.__dict__['name']))
+    state = session.query(State).first()
+    if state:
+        print("{}: {}".format(state.__dict__['id'], state.__dict__['name']))
     else:
         print("Nothing")
 
