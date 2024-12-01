@@ -1,31 +1,29 @@
 #!/usr/bin/python3
 """
-    script that takes in an argument and displays all
-    values in the states table of hbtn_0e_0_usa
+Select all records from states table
 """
+from sys import argv
 
-import sys
 import MySQLdb
 
-
 if __name__ == "__main__":
-    conn = MySQLdb.connect(
-        user=sys.argv[1],
-        password=sys.argv[2],
-        db=sys.argv[3],
-        host="localhost",
-        port=3306
+    username, password, database = argv[1:4]
+    search_name = argv[4]
+    # default host is 'localhost' and default port is '3306'
+    connection = MySQLdb.connect(
+        user=username,
+        password=password,
+        db=database
     )
-    cursor = conn.cursor()
-    sql = """ SELECT * FROM states
-        WHERE name LIKE BINARY '{}'
-        ORDER BY id ASC """.format(sys.argv[4])
 
-    cursor.execute(sql)
-    data = cursor.fetchall()
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT * FROM states WHERE '
+        'states.name LIKE BINARY "{}" '
+        'ORDER BY states.id'.format(search_name))
+    states = cursor.fetchall()
 
-    for row in data:
-        print(row)
+    for state in states:
+        print(state)
 
-    cursor.close()
-    conn.close()
+    connection.close()

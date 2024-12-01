@@ -1,17 +1,25 @@
 #!/usr/bin/python3
-"""List all states from the databse."""
-
-
-import MySQLdb
+"""
+Select all records from states table
+"""
 from sys import argv
 
+import MySQLdb
+
 if __name__ == "__main__":
-    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
-                         passwd=argv[2], db=argv[3], charset="utf8")
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM states ORDER BY id ASC")
-    mylist = cursor.fetchall()
-    for i in mylist:
-        print(i)
-    cursor.close()
-    db.close()
+    username, password, database = argv[1:4]
+    # default host is 'localhost' and default port is '3306'
+    connection = MySQLdb.connect(
+        user=username,
+        password=password,
+        db=database
+    )
+
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM states ORDER BY states.id')
+    states = cursor.fetchall()
+
+    for state in states:
+        print(state)
+
+    connection.close()

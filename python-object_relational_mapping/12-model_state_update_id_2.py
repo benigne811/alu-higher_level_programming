@@ -1,27 +1,27 @@
-
 #!/usr/bin/python3
-"""script that changes the name of a State object
-from the database hbtn_0e_6_usa
 """
+Module to get all states
+"""
+from sys import argv
 
-import sys
-from model_state import Base, State
-from sqlalchemy.orm import sessionmaker
+from model_state import State, Base
 from sqlalchemy import create_engine
-
+from sqlalchemy.orm import Session
 
 if __name__ == "__main__":
-    engine = create_engine("mysql+mysqldb://{}:{}@localhost/{}"
-                           .format(sys.argv[1], sys.argv[2], sys.argv[3]),
-                           pool_pre_ping=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    username, password, database = argv[1:4]
+    # default host is 'localhost' and default port is '3306'
+    engine = create_engine(
+        'mysql+mysqldb://{}:{}@localhost/{}'
+        .format(username, password, database),
+        pool_pre_ping=True
+    )
+    session = Session(engine)
     Base.metadata.create_all(engine)
 
     state = session.query(State).filter(State.id == 2).first()
-
-    state.name = "New Mexico"
-
+    state.name = "New Mexico"  # why it failed, i was setting the name of session instead of state
     session.commit()
-    session.close()
+    # print(f"{state.id}")
 
+    session.close()

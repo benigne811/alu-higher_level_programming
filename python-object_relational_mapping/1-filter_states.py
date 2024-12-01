@@ -1,33 +1,27 @@
-
 #!/usr/bin/python3
 """
-    Create a that lists all states with a name starting with N
+Select all records from states table
 """
+from sys import argv
 
-
-import sys
 import MySQLdb
 
 if __name__ == "__main__":
-    conn = MySQLdb.connect(
-       user=sys.argv[1],
-       password=sys.argv[2],
-       db=sys.argv[3],
-       host="localhost",
-       port=3306
+    username, password, database = argv[1:4]
+    # default host is 'localhost' and default port is '3306'
+    connection = MySQLdb.connect(
+        user=username,
+        password=password,
+        db=database
     )
 
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM states \
-        WHERE name LIKE BINARY 'N%' \
-        ORDER BY id ASC")
-
-    states = cur.fetchall()
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT * FROM states WHERE '
+        'states.name LIKE BINARY "N%" ORDER BY states.id')
+    states = cursor.fetchall()
 
     for state in states:
         print(state)
 
-    cur.close()
-    conn.close()
-
+    connection.close()

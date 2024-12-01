@@ -1,26 +1,28 @@
-
 #!/usr/bin/python3
-"""script that adds the State object
-“Louisiana” to the database hbtn_0e_6_usa
 """
+Module to get all states
+"""
+from sys import argv
 
-import sys
-from model_state import Base, State
-from sqlalchemy.orm import sessionmaker
+from model_state import State, Base
 from sqlalchemy import create_engine
-
+from sqlalchemy.orm import Session
 
 if __name__ == "__main__":
-    engine = create_engine("mysql+mysqldb://{}:{}@localhost/{}"
-                           .format(sys.argv[1], sys.argv[2], sys.argv[3]),
-                           pool_pre_ping=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    username, password, database = argv[1:4]
+    # search_name = argv[4] # why it failed, I reused code and forgot to remove 'search_name'. the 5th argument was not passed and the index was out of range
+    # default host is 'localhost' and default port is '3306'
+    engine = create_engine(
+        'mysql+mysqldb://{}:{}@localhost/{}'
+        .format(username, password, database),
+        pool_pre_ping=True
+    )
+    session = Session(engine)
     Base.metadata.create_all(engine)
 
     state = State(name="Louisiana")
     session.add(state)
     session.commit()
-    print(state.id)
-    session.close()
+    print(f"{state.id}")
 
+    session.close()
